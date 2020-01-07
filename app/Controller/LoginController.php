@@ -75,7 +75,7 @@
         }
           else 
           {
-            $this -> Flash -> error(sadas
+            $this -> Flash -> error(
               __('Your username or password are wrong ',h($id))
             );
           }
