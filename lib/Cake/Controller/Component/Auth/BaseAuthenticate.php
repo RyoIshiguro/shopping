@@ -39,12 +39,14 @@ abstract class BaseAuthenticate implements CakeEventListener {
  *
  * @var array
  */
+ //規約から外れた場合のログイン実装
+ //user table がログインのデフォルトになっているので、ここでtableとDBのフィールドを指定する
 	public $settings = array(
 		'fields' => array(
 			'username' => 'username',
 			'password' => 'password'
 		),
-		'userModel' => 'User',
+		'userModel' => 'Login',
 		'userFields' => null,
 		'scope' => array(),
 		'recursive' => 0,
