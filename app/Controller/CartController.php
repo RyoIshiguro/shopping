@@ -7,15 +7,14 @@
   {
     
     public $uses = array(
-      'users',
-      'products',
-      'shopping_cart',
-      'shopping_cart_item'
+      'Login',
+      'Products',
+      'Cart'
     );
     
     function index()
     {
-      // echo "Hello Cart";
+      echo "Hello Cart";
     }
   }
    

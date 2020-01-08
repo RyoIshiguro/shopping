@@ -1,33 +1,45 @@
 <?php 
-
+  // echo "<pre>";
+  // var_dump($product);
+  // var_dump($product);
  ?>
   
-  <!-- card -->
+  <body>
+    
+  
+  
  <form class="" action="" method="post" enctype="multipart/form-data">
 
-   <div class="row" style="height:400px;">
-     <div class="card mb-12" style="width: 100%; margin:2.5%;">
+  <div class="container-fluid">
+   <div class="row" style="height:500px;">
+     <div class="card mb-12" style="width: 100%; height:400px;margin:2.5%;">
        <div class="row no-gutters" style="height: 100%;">
          <div class="col-md-4">
-           <!-- <img src="img/philippines_flag3.jpg" style="height:100%;"class="card-img" alt="..."> -->
 
-               <input type="file" name="user_image" value="" style="height:100%; margin:auto; border-radius:10px;" class="card-img">
-               <button type="submit" name="upload" style="margin:5px; border-radius:5px;">UPLOAD</button>
+              <img class="card-img-top" style="height:100%;" src="http://localhost:8888/shopping/img/<?php echo $product['Details']['img']; ?>" alt="">
 
          </div>
          <div class="col-md-8">
            <div class="card-body">
-             <div class="">title</div>
+             <div class="" style="width:100%"><h2><?php echo $product['Details']['name']; ?></h2></div>
+             <hr>
              <br>
-             <br>
-             <div class="">¥price</div>
-             <div class="">blah blah blah</div>
-             <button type="submit" name="save">Cart</button>
-             <button type="submit" name="save">Buy now</button>
+             <div class="" style=""><h3><?php echo $product['Details']['content']; ?></h3></div><br>
+             <div class="" style="color:blue;"><h3>$<?php echo $product['Details']['price']; ?></h3></div><br>
+             <div class="" style="">Condition:<br><h4><?php echo $product['Details']['comment']; ?></h4></div><br>
+             
+             <form class="" action="" method="get">
+               <button type="submit" name="save" style="">Cart</button>
+               <button type="submit" name="save" style="">Buy now</button>
+             </form>
+             
            </div>
          </div>
        </div>
      </div>
    </div>
+  </div>
 
  </form>
+ 
+ </body>
