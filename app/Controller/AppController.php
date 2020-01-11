@@ -36,7 +36,11 @@ App::uses('Controller', 'Controller');
  // app/Controller/AppController.php
  class AppController extends Controller
  {
-
+    
+   public $uses = array(
+     'Cart'
+   );
+   
      public $components = array(
        'Session',
          'Flash',
@@ -97,9 +101,38 @@ App::uses('Controller', 'Controller');
      //beforefilterが子クラスから呼ばれたら
      public function beforeFilter()
      {
+       
+       // //<-日時取得->
+       // //コンポーネントDateから値を取得
+       // $now = $this->Date->today();
+       // //Viewに$nowを渡す
+       // $this->set('now', $now);
+       
         // var_dump($this->Auth->User());
         // die();
         $this->set('current_user',$this->Auth->User());
+        
+        //user login it's working
+        if($this->Auth->User('id'))
+        {
+          //cart_idから一致するデータを取得する
+          //model cart からステータス0とuser_id(ログインユーザー)を取得
+          $data = $this->Cart->find('first',array(
+            "conditions" => array(
+              'status' => '0',
+              'user_id'=>$this->Auth->User('id')
+              )
+            )
+          );
+          //ログインデータから
+          $this->set('current_cart',$data);
+        }
+          else 
+          {
+            //ログインしていないならtopに戻す
+            // $this->redirect('http://localhost:8888/shopping/');
+          }
+        
         
         
          //許可を出すindex,view に
@@ -113,8 +146,9 @@ App::uses('Controller', 'Controller');
            'edit',
            'delete',
            'products',
-           'products_edit',
-           'products_register'
+           'cart',
+           'products_register',
+           'cartitem'
          );
      }
      

@@ -1,14 +1,13 @@
 <?php 
   // echo "<pre>";
-  // var_dump($product);
+  // var_dump($product['Details']['id']);
   // var_dump($product);
  ?>
-  
-  <body>
+
     
   
-  
- <form class="" action="" method="post" enctype="multipart/form-data">
+  <!-- shopping/details/index.ctp -->
+ <form class="" action="" method="post">
 
   <div class="container-fluid">
    <div class="row" style="height:500px;">
@@ -16,7 +15,7 @@
        <div class="row no-gutters" style="height: 100%;">
          <div class="col-md-4">
 
-              <img class="card-img-top" style="height:100%;" src="http://localhost:8888/shopping/img/<?php echo $product['Details']['img']; ?>" alt="">
+          <img class="card-img-top" style="height:100%;" src="http://localhost:8888/shopping/img/<?php echo $product['Details']['img']; ?>" alt="">
 
          </div>
          <div class="col-md-8">
@@ -28,10 +27,9 @@
              <div class="" style="color:blue;"><h3>$<?php echo $product['Details']['price']; ?></h3></div><br>
              <div class="" style="">Condition:<br><h4><?php echo $product['Details']['comment']; ?></h4></div><br>
              
-             <form class="" action="" method="get">
-               <button type="submit" name="save" style="">Cart</button>
-               <button type="submit" name="save" style="">Buy now</button>
-             </form>
+             
+             <button type="submit" name="cart" style="">Cart</button>
+             <button type="submit" name="buy" style="">Buy now</button>
              
            </div>
          </div>
@@ -41,5 +39,3 @@
   </div>
 
  </form>
- 
- </body>

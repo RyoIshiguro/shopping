@@ -39,7 +39,7 @@
         </div>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="#">Cart <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="http://localhost:8888/shopping/cart">Cart<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="http://localhost:8888/shopping/login">Login <span class="sr-only">(current)</span></a>

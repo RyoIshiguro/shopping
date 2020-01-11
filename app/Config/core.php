@@ -228,7 +228,7 @@
  */
 	Configure::write('Session', array(
 		'defaults' => 'php',
-		'timeout' => 5, // 単位：分 自動タイムアウト
+		'timeout' => 24*60*60, // 単位：分 自動タイムアウト 24*60*60 = 一日
 	));
 
 /**
@@ -279,7 +279,7 @@
  * Uncomment this line and correct your server timezone to fix
  * any date & time related errors.
  */
-	//date_default_timezone_set('UTC');
+	date_default_timezone_set('UTC');
 
 /**
  * `Config.timezone` is available in which you can set users' timezone string.
