@@ -279,7 +279,8 @@
  * Uncomment this line and correct your server timezone to fix
  * any date & time related errors.
  */
-	date_default_timezone_set('UTC');
+ 	//time_zone set
+	date_default_timezone_set('Asia/Hong_Kong');
 
 /**
  * `Config.timezone` is available in which you can set users' timezone string.

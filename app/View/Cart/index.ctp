@@ -10,7 +10,10 @@
   // }
   
   // echo $products;
-  echo '本日の日付は'.$now.'です。';
+  // echo '本日の日付は'.$now.'です。';
+  
+  echo "<pre>";
+  var_dump($cart_data);
  ?>
  
  
@@ -27,16 +30,16 @@
        <div class="row no-gutters" style="height: 300px;">
          <div class="col-md-4">
 
-              <img class="card-img-top" style="height:300px;" src="http://localhost:8888/shopping/img/<?php echo $product['Details']['img']; ?>" alt="">
+              <img class="card-img-top" style="height:300px;" src="http://localhost:8888/shopping/img/<?php echo $product_data['Product']['img']; ?>" alt="">
 
          </div>
          <div class="col-md-8">
            <div class="card-body">
-             <div class="p" style="width:100%"><?php echo $product['Details']['name']; ?></div>
+             <div class="p" style="width:100%"><?php echo $cart_data['Details']['name']; ?></div>
              <hr>
-             <div class="p" style=""><?php echo $product['Details']['content']; ?></div>
-             <div class="p" style="color:blue;">$<?php echo $product['Details']['price']; ?></div>
-             <div class="p" style="">Condition:<br><?php echo $product['Details']['comment']; ?></div>
+             <div class="p" style=""><?php echo $cart_data['Details']['content']; ?></div>
+             <div class="p" style="color:blue;">$<?php echo $cart_data['Details']['price']; ?></div>
+             <div class="p" style="">Condition:<br><?php echo $cart_data['Details']['comment']; ?></div>
              
              <form class="" action="" method="get">
                <input type="" name="count" style="width:100px;" class="p" placeholder="count"></input>

@@ -10,8 +10,46 @@
       'Login',
       'Product',
       'Details',
-      'Cart'
+      'Cart',
+      'cartitem'
     );
+    
+    public function beforeFilter()
+    {
+      parent::beforeFilter();
+      
+      //$this->Auth->User();でログインユーザーの情報を取得
+       $user_data = $this->Auth->User();
+       // var_dump($data);
+       
+       //beforeFilterセットした変数を別のアクションで使う方法
+       $this->user = $user_data;
+       
+       //user login it's working
+       if($this->Auth->User('id'))
+       {
+         //cart_idから一致するデータを取得する
+         //model cart からステータス0とuser_id(ログインユーザー)を取得
+         $data = $this->Cart->find('first',array(
+           "conditions" => array(
+             'status' => '0',
+             'user_id'=>$this->Auth->User('id')
+             )
+           )
+         );
+         //ログインデータから
+         $this->set('current_cart',$data);
+       }
+         else 
+         {
+           //ログインしていないならtopに戻す
+           // $this->redirect('http://localhost:8888/shopping/');
+         }
+       // echo "<pre>\n";
+       // var_dump($data);
+       
+       
+    }
     
     //DateComponentを指定する
     public $components = array('Date');
@@ -21,31 +59,36 @@
       //<-日時取得->
       //コンポーネントDateから値を取得
       $now = $this->Date->today();
+      // var_dump($now);
+      // var_dump(date_default_timezone_get());
+      // die();
       //Viewに$nowを渡す
       $this->set('now', $now);
       
+      $price = 0;
       //checking from form data
       // $get = $this->request->query;
       // var_dump($post);echo "<br>\n";
       // var_dump($get);echo "<br>\n";
-      
-      if($this->request->is('get'))
-      {
-        // echo "this is get"; echo "<br>\n";
         
         $product_id = $this->request->query('id');
         // var_dump($product_id);
           
+          //取得した商品idと一致するデータをmodel detailから取得
           $data = $this->Details->find('first',array(
             "conditions" => array(
-              'id' => $product_id
+              'id' => $product_id,
             )
           ));
-          // var_dump($employee);
+          
+          $price = $data['Details']['price'];
+          var_dump($data);
+          // die();
       // http://localhost:8888/shopping/cart/    //viewで使う$employeeを作成
           $this -> set('product', $data);
-      }
-      
+      // }
+    
+    //  
     if($this->request->is('post'))
     {
         $product_id = $this->request->query('id');
@@ -86,29 +129,22 @@
       if(isset($_POST['cart']))
       {
         echo "cart";
-        var_dump($data);
+        echo "<pre>";
+        var_dump((int)$price);
+        // die();
         
         //cartにデータ保存
         $this->Cartitem->create();
-        $this->Cart->set(array(
-          'product_id'=>'',
-          'cart_id'=>'',
-          'quantity'=>'',
-          'price'=>''
+        $this->Cartitem->set(array(
+          'product_id'=>$product_id,
+          'user_id'=>$this->Auth->User('id'),
+          'cart_id'=>$data['Cart']['id'],
+          'quantity'=>'1',
+          'price'=>(int)$price,
+          `created_datetime`
         ));
         $this->Cartitem->save();
         
-        //cartitemにデータ生成
-        $this->Cartitem->create();
-        $this->Cart->set(array(
-          'product_id'=>'',
-          'cart_id'=>'',
-          'quantity'=>'',
-          'price'=>''
-        ));
-        $this->Cartitem->save();
-        // echo "cart";echo "<br>\n";
-        // echo "<br>\n";
         return $this->redirect('http://localhost:8888/shopping/cart/');
       } 
         elseif (isset($_POST['buy'])) 

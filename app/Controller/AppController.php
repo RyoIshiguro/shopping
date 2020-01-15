@@ -38,7 +38,9 @@ App::uses('Controller', 'Controller');
  {
     
    public $uses = array(
-     'Cart'
+     'Cart',
+     'Product',
+     'Cartitem'
    );
    
      public $components = array(
@@ -112,7 +114,7 @@ App::uses('Controller', 'Controller');
         // die();
         $this->set('current_user',$this->Auth->User());
         
-        //user login it's working
+        //user login it's working then work
         if($this->Auth->User('id'))
         {
           //cart_idから一致するデータを取得する
@@ -132,6 +134,13 @@ App::uses('Controller', 'Controller');
             //ログインしていないならtopに戻す
             // $this->redirect('http://localhost:8888/shopping/');
           }
+          
+        if($this->Auth->User('id'))
+        {
+          $prodata = $this->Product->find('all');
+          //
+          $this->set('product_data',$prodata);
+        }
         
         
         

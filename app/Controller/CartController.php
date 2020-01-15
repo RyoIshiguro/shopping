@@ -10,7 +10,8 @@
       'Login',
       'Products',
       'Details',
-      'Cart'
+      'Cart',
+      'cartitem'
     );
     
     //DateComponentを指定する
@@ -20,37 +21,7 @@
     public function beforeFilter()
     {
       parent::beforeFilter();
-      
-      //$this->Auth->User();でログインユーザーの情報を取得
-       $user_data = $this->Auth->User();
-       // var_dump($data);
-       
-       //beforeFilterセットした変数を別のアクションで使う方法
-       $this->user = $user_data;
-       
-       //user login it's working
-       if($this->Auth->User('id'))
-       {
-         //cart_idから一致するデータを取得する
-         //model cart からステータス0とuser_id(ログインユーザー)を取得
-         $data = $this->Cart->find('first',array(
-           "conditions" => array(
-             'status' => '0',
-             'user_id'=>$this->Auth->User('id')
-             )
-           )
-         );
-         //ログインデータから
-         $this->set('current_cart',$data);
-       }
-         else 
-         {
-           //ログインしていないならtopに戻す
-           // $this->redirect('http://localhost:8888/shopping/');
-         }
-       var_dump($data);
-       
-       
+    
     }
     
     function index()
@@ -61,24 +32,44 @@
       //コンポーネントDateから値を取得
       $now = $this->Date->today();
       //Viewに$nowを渡す
-      $this->set('now', $now);
+      $this->set('now',$now);
       
-      if($this->request->is('get'))
-      {
-        //beforeFilterセットした変数を別のアクションで使う方法
-        //beforeFilter呼び出し時にセットした変数を呼び出すことが可能
-        // echo "<pre>";
-        // var_dump($this->user);
-        // 変数に再度入れたい場合はこのようにしてください
-        // echo "<pre>";
-        // $data = $this->user;
-        // var_dump($data);
-        // echo "<br>\n";
-        
-        //こんな感じで配列の指定が可能になる
-        // echo $data['id'];
-      }
       
+      $my_cart_items = $this->Cart->find('all', array(
+      	// - main condition
+      	'conditions' => array(
+      		'user_id' => $this->Auth->User('id'),
+      		'status' => 0
+      	),
+      	// - joining condition
+      	'joins' => array(
+      		// - join shopping cart to get the cart information
+      		array (
+      			'type' => 'LEFT',
+      			'table' => 'shopping_cart_items',
+      			'alias' => 'CartItems',
+      			'conditions' => 'CartItems.cart_id = Cart.id'
+      		),
+      		// - join products to get the product name
+      		array (
+      			'type' => 'LEFT',
+      			'table' => 'products',
+      			'alias' => 'Details',
+      			'conditions' => 'CartItems.product_id = Details.id'
+      		)
+      	),
+        'fields' => array(
+      		'Cart.*',
+      		'CartItems.*',
+      		'Details.*'
+      	),
+      ));
+      
+      // echo "<pre>";
+      // var_dump($my_cart_items);
+      // die();
+            
+      $this->set('cart_data',$my_cart_items);
       
     }
   }
