@@ -18,14 +18,10 @@
   // echo "<pre>";
   // mulutiple index array   $valuename[array of number][model][feild];
   // var_dump($cart_data['0']['Details']['img']);
-  // var_dump($my_cart_item_id);
+  // var_dump($product_data);
  ?>
- 
- 
+
  <!-- shopping/details/index.ctp -->
- 
- <!-- card -->
- <!-- <form class="" action="" method="post" enctype="multipart/form-data"> -->
  <?php
   foreach ($cart_data as $cart_data) {
   ?>
@@ -49,10 +45,13 @@
              
              <form class="" action="" method="post">
                <input type="" name="count" style="width:100px;" class="p" placeholder="count"></input>
-               <button type="submit" name="buy" style="" class="p">Buy now</button>
+               <button type="submit" name="buy" style="" class="p" value="buy">Buy now</button>
                <button type="submit" name="delete" style="" class="p" value="delete">Delete</button>
                <!-- ↓のやり方で値を隠せる -->
                <input type="hidden" name="detail_id" value="<?php echo $cart_data['Cartitems']['id'] ?>">
+               <input type="hidden" name="cart_id" value="<?php echo $cart_data['Cart']['id'] ?>">
+               <input type="hidden" name="product_id" value="<?php echo $cart_data['Details']['id'] ?>">
+               
              </form>
              
            </div>

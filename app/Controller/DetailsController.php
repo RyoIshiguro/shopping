@@ -65,6 +65,7 @@
       //Viewに$nowを渡す
       $this->set('now', $now);
       
+      //カート生成時点では０なので、０を入れる
       $price = 0;
       //checking from form data
       // $get = $this->request->query;
@@ -75,17 +76,17 @@
         // var_dump($product_id);
           
           //取得した商品idと一致するデータをmodel detailから取得
-          $data = $this->Details->find('first',array(
+          $data_details = $this->Details->find('first',array(
             "conditions" => array(
               'id' => $product_id,
             )
           ));
           
-          $price = $data['Details']['price'];
-          var_dump($data);
+          $price = $data_details['Details']['price'];
+          // var_dump($data);
           // die();
       // http://localhost:8888/shopping/cart/    //viewで使う$employeeを作成
-          $this -> set('product', $data);
+          $this -> set('product', $data_details);
       // }
     
     //  
@@ -93,7 +94,7 @@
     {
         $product_id = $this->request->query('id');
         
-        $data = $this->Cart->find('first',array(
+        $data_cart = $this->Cart->find('first',array(
           "conditions" => array(
             'status' => '0',
             'user_id'=>$this->Auth->User('id')
@@ -103,7 +104,7 @@
       var_dump($this->Auth->User('id'));
       
       //if data is null (false)
-      if(!$data)
+      if(!$data_details)
       {
         //model cart にデータ生成
         $this->Cart->create();
@@ -117,40 +118,51 @@
           'paid_datetime'=>'',
           'cancelled_datetime'=>''
         ));
-        //保存。そして変数名は$data
-        $data = $this->Cart->save();
+        //保存。
+        $this->Cart->save();
       }
         // var_dump($data);
         // die();
         
           // $this -> set('product', $data);
           
-      
-      if(isset($_POST['cart']))
+      if($this->request->data('cart'))
       {
-        echo "cart";
-        echo "<pre>";
-        var_dump((int)$price);
-        // die();
-        
         //cartにデータ保存＝shopping_cart tableにデータ生成
         $this->Cartitem->create();
         $this->Cartitem->set(array(
           'product_id'=>$product_id,
           'user_id'=>$this->Auth->User('id'),
-          'cart_id'=>$data['Cart']['id'],
+          'cart_id'=>$data_cart['Cart']['id'],
           'quantity'=>'1',
           'price'=>(int)$price,
-          `created_datetime`
+          'added_datetime'=>$now
         ));
         $this->Cartitem->save();
+        // var_dump($data_details);
+        // die();
+        
+        
+        //up date price, this is in cart amount.
+        $data_cart = $this->Cart->read(null,$data_cart['Cart']['id']);
+        // var_dump($data_cart);
+        // die();
+        
+        //金額を計算する
+        $this->Cart->set(array(
+          //カートの金額＋製品の金額 これをカートに追加する。
+          'price'=> (int) $data_cart['Cart']['price'] + (int)$data_details['Details']['price']
+        ));
+        //保存。
+        $this->Cart->save();
+        
         
         return $this->redirect('http://localhost:8888/shopping/cart/');
       } 
         elseif (isset($_POST['buy'])) 
         {
           echo "buy";
-          return $thisr->redirect('http://localhost:8888/shopping/buy/');
+          return $this->redirect('http://localhost:8888/shopping/buy/');
         } 
           else 
           {

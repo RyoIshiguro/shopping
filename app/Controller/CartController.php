@@ -52,7 +52,7 @@
         if($this->request->data('delete'))
         {
           //update of trigger, update the new data to Cartitem
-          //detail_id ＝ $cart_data['Cartitems']['id'];
+          //detail_id ＝ $cart_data['Cartitems']['id'];(joinしたデータ)
           //postでdetail_idを受け取ったらcartitemに値をセットする
           //read(null,$this->request->data('detail_id'));のnullの意味は＊全てのフィールドを意味するread(('id','email'),$user_id);とすると指定可能 もしくはarray(''),$user_id
           $this->Cartitem->read(null,$this->request->data('detail_id'));
@@ -60,17 +60,66 @@
           $this->cartitem->set(
             array(
               //active to inactive 1 -> 0
-              'status'=>'0'
+              'status'=>'0',
+              'cancelled_datetime'=>$now,
             )
           );
           //save what data was updated
           $this->cartitem->save();
           // die();
+          
+          
+          //cartの金額からデリートした分だけの金額を引く
+            //up date price, this is in cart amount.
+            $data_cart = $this->Cart->read(null,$this->request->data('cart_id'));
+            $product_data = $this->Details->read(null,$this->request->data('product_id'));
+            // var_dump($product_data);
+            // die();
+            
+            //金額を計算する
+            $this->Cart->set(array(
+              //カートの金額＋製品の金額 これをカートに追加する。
+              'price'=> (int) $data_cart['Cart']['price'] - (int) $product_data['Details']['price']
+            ));
+            //保存。
+            $this->Cart->save();
         }
         // dubug for post data
         // var_dump($this->request->data);
         
       }
+      
+      //購入機能 buy feature
+      if($this->request->is('post'))
+      {
+        // echo "buy";
+        if($this->request->data('buy'))
+        {
+          $this->Cartitem->read(null,$this->request->data('detail_id'));
+          //status is changed active to inactive 
+          $this->cartitem->set(
+            array(
+              //active to inactive 1 -> 0
+              'status'=>'2',
+              'paid_datetime'=>$now
+            )
+          );
+          $this->cartitem->save();
+          
+          $this->Cart->read(null,$this->request->data('cart_id'));
+          $this->Cart->set(
+            array(
+              //active to inactive 1 -> 0
+              'Cart.status'=>1
+            )
+          );
+          //save what data was updated
+          $this->Cart->save();
+          // die();
+          return $this->redirect("http://localhost:8888/shopping/buy/");
+        }
+      }
+      
       
       
       $my_cart_items = $this->Cart->find('all', array(
@@ -113,7 +162,6 @@
       
       //three tables of data in the $cart_data
       $this->set('cart_data',$my_cart_items);
-      
       
       
     }

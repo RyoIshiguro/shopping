@@ -8,7 +8,6 @@
     
   
   <!-- shopping/details/index.ctp -->
- <form class="" action="" method="post">
 
   <div class="container-fluid">
    <div class="row" style="height:500px;">
@@ -28,10 +27,11 @@
              <div class="" style="color:blue;"><h3>$<?php echo $product['Details']['price']; ?></h3></div><br>
              <div class="" style="">Condition:<br><h4><?php echo $product['Details']['comment']; ?></h4></div><br>
              
-             
-             <button type="submit" name="cart" style="">Cart</button>
-             <button type="submit" name="buy" style="">Buy now</button>
-             
+             <form class="" action="" method="post">
+               <button type="submit" name="cart" style="">Cart</button>
+               <button type="submit" name="buy" style="">Buy now</button>
+               <input type="hidden" name="cart" value="<?php echo $product['Details']['price']; ?>">
+            </form>
            </div>
          </div>
        </div>
@@ -39,4 +39,4 @@
    </div>
   </div>
 
- </form>
+

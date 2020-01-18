@@ -138,7 +138,7 @@ App::uses('Controller', 'Controller');
         if($this->Auth->User('id'))
         {
           $prodata = $this->Product->find('all');
-          //
+          // var_dump($prodata);
           $this->set('product_data',$prodata);
           
           $cartitemdata = $this->Cartitem->find('all');
@@ -161,7 +161,8 @@ App::uses('Controller', 'Controller');
            'products',
            'cart',
            'products_register',
-           'cartitem'
+           'cartitem',
+           'buy'
          );
      }
      
