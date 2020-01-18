@@ -2,6 +2,7 @@
   // echo "<pre>";
   // var_dump($product['Details']['id']);
   // var_dump($product);
+  // var_dump($cartitemdata);
  ?>
 
     

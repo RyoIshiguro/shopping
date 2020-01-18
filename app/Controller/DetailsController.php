@@ -133,7 +133,7 @@
         var_dump((int)$price);
         // die();
         
-        //cartにデータ保存
+        //cartにデータ保存＝shopping_cart tableにデータ生成
         $this->Cartitem->create();
         $this->Cartitem->set(array(
           'product_id'=>$product_id,

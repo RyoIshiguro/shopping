@@ -140,6 +140,10 @@ App::uses('Controller', 'Controller');
           $prodata = $this->Product->find('all');
           //
           $this->set('product_data',$prodata);
+          
+          $cartitemdata = $this->Cartitem->find('all');
+          //
+          // $this->set('cartitemdata',$cartitemdata);
         }
         
         
