@@ -30,7 +30,7 @@
         
           <div class="col-sm-3">
             <div class="card" style="width: 280px; margin:5px;">
-              <img class="card-img-top" style="height:200px;" src="http://localhost:8888/shopping/img/<?php echo $products['Product']['img']; ?>" alt="">
+              <img class="card-img-top" style="height:200px; border-color:black;" src="http://localhost:8888/shopping/img/<?php echo $products['Product']['img']; ?>" alt="">
               <div class="card-body">
                 <h5 class="card-title">
                   <form class="" action="http://localhost:8888/shopping/details" method="get">
