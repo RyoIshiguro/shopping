@@ -53,6 +53,8 @@
            if(isset($current_user['username']))
            {
              echo 'Welcom :'. ' '.$current_user['username'];
+             echo str_repeat("&nbsp;",4); //phpの空白入れ方。数字が半角スペースの数
+             echo '$ :'. ' '.$current_user['money'];
            }
           ?>
           <span class="sr-only">(current)</span>

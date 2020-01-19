@@ -138,12 +138,22 @@ App::uses('Controller', 'Controller');
         if($this->Auth->User('id'))
         {
           $prodata = $this->Product->find('all');
-          // var_dump($prodata);
+          // var_dump($this->Auth->User('id'));
           $this->set('product_data',$prodata);
           
           $cartitemdata = $this->Cartitem->find('all');
           //
           // $this->set('cartitemdata',$cartitemdata);
+          
+          //display cart amout
+          $cartprice = $this->Cart->find('first',array(
+            "conditions" => array(
+            'user_id'=>$this->Auth->User('id'),
+            'status'=>'0'
+          )));
+          
+          $this->set('cartprice',$cartprice);
+          // var_dump($cartprice);
         }
         
         

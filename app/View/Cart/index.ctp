@@ -45,7 +45,54 @@
              
              <form class="" action="" method="post">
                <input type="" name="count" style="width:100px;" class="p" placeholder="count"></input>
-               <button type="submit" name="buy" style="" class="p" value="buy">Buy now</button>
+               
+               <!-- for buy -->
+               <button type="button" data-toggle="modal" data-target="#exampleModal" name="buy" style="" class="p" value="buy">Buy now</button>
+               <!-- モーダルの設定 -->
+               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                 <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                     <div class="modal-header">
+                       <h5 class="modal-title" id="exampleModalLabel"><?php echo $cart_data['Details']['name']; ?></h5>
+                       <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                         <span aria-hidden="true">&times;</span>
+                       </button>
+                     </div>
+                     <div class="modal-body">
+                       <h2><p style="color:blue;"><?php 
+                            echo $current_user['money'];
+                            echo str_repeat("&nbsp;",4); 
+                            echo "-"; 
+                            echo str_repeat("&nbsp;",4); 
+                            echo $cart_data['Details']['price'];
+                            ?>
+                       </h2></p>  
+                       <h4><p><?php
+                            $dif = $current_user['money'] - $cart_data['Details']['price'];
+                            echo "<br>\n";
+                            echo "Remaining balance: $dif";
+                            echo str_repeat("&nbsp;",1); 
+                            if ($dif < 0) 
+                            {
+                              echo "not enough money, you have to earn money first.";
+                            }
+                          ?>
+                         <h4></p>
+                     </div>
+                     <div class="modal-footer">
+                       <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                       <?php 
+                       if ($dif < 0) {
+                         ?>
+                         <button type="submit" class="btn btn-disabled" name="buy" value="buy" disabled>Buy</button>
+                     <?php } else  { ?>  
+                        <button type="submit" class="btn btn-primary" name="buy" value="buy" >Buy</button>
+                      <?php  } ?>
+                     </div><!-- /.modal-footer -->
+                   </div><!-- /.modal-content -->
+                 </div><!-- /.modal-dialog -->
+               </div><!-- /.modal -->
+               
                <button type="submit" name="delete" style="" class="p" value="delete">Delete</button>
                <!-- ↓のやり方で値を隠せる -->
                <input type="hidden" name="detail_id" value="<?php echo $cart_data['Cartitems']['id'] ?>">
@@ -53,7 +100,7 @@
                <input type="hidden" name="product_id" value="<?php echo $cart_data['Details']['id'] ?>">
                
              </form>
-             
+
            </div>
          </div>
        </div>

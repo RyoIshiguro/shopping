@@ -83,6 +83,8 @@
             ));
             //保存。
             $this->Cart->save();
+            
+            return $this->redirect('http://localhost:8888/shopping/cart');
         }
         // dubug for post data
         // var_dump($this->request->data);
