@@ -26,6 +26,7 @@
             'value' => '1'
             )
           );
+          echo $this->Form->input('money');
         ?>
     </fieldset>
   <!-- button  -->

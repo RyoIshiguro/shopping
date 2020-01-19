@@ -128,7 +128,8 @@
           'last_name' => $user_edit['last_name'],
           'username' => $user_edit['username'],
           'email' => $user_edit['email'],
-          'user_type' => $user_edit['user_type']
+          'user_type' => $user_edit['user_type'],
+          'money' => $user_edit['money']
         ));
         //ここでtableに保存する
         //$userはデバッグ用

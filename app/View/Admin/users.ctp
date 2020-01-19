@@ -10,6 +10,7 @@
       <th scope="col">username</th>
       <th scope="col">email</th>
       <th scope="col">user_type</th>
+      <th scope="col">money</th>
       <th scope="col">edit</th>
       <th scope="col">Delete</th>
     </tr>
@@ -27,6 +28,7 @@
       <td><?php echo $admin_users['Admin']['username']; ?></td>
       <td><?php echo $admin_users['Admin']['email']; ?></td>
       <td><?php echo $admin_users['Admin']['user_type']; ?></td>
+      <td><?php echo $admin_users['Admin']['money']; ?></td>
       <td>
         <a href="http://localhost:8888/shopping/admin/edit?id=<?php echo $admin_users['Admin']['id']; ?>">Edit</a>
       </td>

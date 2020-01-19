@@ -15,6 +15,7 @@
   // echo $products;
   // echo '本日の日付は'.$now.'です。';
   
+  //joinされた配列の取得
   // echo "<pre>";
   // mulutiple index array   $valuename[array of number][model][feild];
   // var_dump($cart_data['0']['Details']['img']);
@@ -46,18 +47,20 @@
              <form class="" action="" method="post">
                <input type="" name="count" style="width:100px;" class="p" placeholder="count"></input>
                
-               <!-- for buy -->
+               <!-- button Buy  押すとモーダルが出る-->
                <button type="button" data-toggle="modal" data-target="#exampleModal" name="buy" style="" class="p" value="buy">Buy now</button>
                <!-- モーダルの設定 -->
                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                  <div class="modal-dialog" role="document">
                    <div class="modal-content">
                      <div class="modal-header">
+                       <!-- modal title -->
                        <h5 class="modal-title" id="exampleModalLabel"><?php echo $cart_data['Details']['name']; ?></h5>
                        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
                          <span aria-hidden="true">&times;</span>
                        </button>
                      </div>
+                     <!-- modal body -->
                      <div class="modal-body">
                        <h2><p style="color:blue;"><?php 
                             echo $current_user['money'];
@@ -68,10 +71,13 @@
                             ?>
                        </h2></p>  
                        <h4><p><?php
+                            //$dif = 計算式の答え(会員の残金)  会員の資金 - 製品の値段
                             $dif = $current_user['money'] - $cart_data['Details']['price'];
                             echo "<br>\n";
                             echo "Remaining balance: $dif";
                             echo str_repeat("&nbsp;",1); 
+                            
+                            //条件文 お金が足らない時はエラー文言を表示
                             if ($dif < 0) 
                             {
                               echo "not enough money, you have to earn money first.";
@@ -79,15 +85,20 @@
                           ?>
                          <h4></p>
                      </div>
+                     
+                     <!-- modal footer -->
                      <div class="modal-footer">
                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                       <?php 
-                       if ($dif < 0) {
-                         ?>
+                       
+                       <!-- 条件文 お金が足らない時はボタンを押させない(disabled) -->
+                       <!----------------------------------------------------------->
+                       <?php if ($dif < 0) {  ?>
                          <button type="submit" class="btn btn-disabled" name="buy" value="buy" disabled>Buy</button>
-                     <?php } else  { ?>  
+                       <?php } else  { ?>  
                         <button type="submit" class="btn btn-primary" name="buy" value="buy" >Buy</button>
-                      <?php  } ?>
+                       <?php  } ?>
+                       <!----------------------------------------------------------->
+                       
                      </div><!-- /.modal-footer -->
                    </div><!-- /.modal-content -->
                  </div><!-- /.modal-dialog -->
@@ -95,6 +106,7 @@
                
                <button type="submit" name="delete" style="" class="p" value="delete">Delete</button>
                <!-- ↓のやり方で値を隠せる -->
+               <input type="hidden" name="user_money" value="<?php echo $dif ?>">
                <input type="hidden" name="detail_id" value="<?php echo $cart_data['Cartitems']['id'] ?>">
                <input type="hidden" name="cart_id" value="<?php echo $cart_data['Cart']['id'] ?>">
                <input type="hidden" name="product_id" value="<?php echo $cart_data['Details']['id'] ?>">

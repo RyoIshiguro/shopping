@@ -118,6 +118,32 @@
           //save what data was updated
           $this->Cart->save();
           // die();
+          
+          //カート合計金額の計算  購入した金額をカード合計から引く
+          $data_cart = $this->Cart->read(null,$this->request->data('cart_id'));
+          $product_data = $this->Details->read(null,$this->request->data('product_id'));
+          //金額を計算する
+          $this->Cart->set(array(
+            //カートの金額＋製品の金額 これをカートに追加する。
+            'price'=> (int) $data_cart['Cart']['price'] - (int) $product_data['Details']['price']
+          ));
+          //計算結果を保存
+          $this->Cart->save();
+          
+          //calcuration user_money - product_price
+          //----------------------------------------------
+          //ポストされた会員の残金
+          $newMoney = $this->request->data('user_money');
+          //
+          $this->Login->id = $this->Auth->User('id');
+          //フィールド指定して保存する　Login model のmoney fieldに$newmoneyを保存する
+          $this->Login->saveField("money",$newMoney);
+          //セッションに書き込み Auth.model.field,にfieldに$newmoneyを保存する(更新)
+          $this->Session->write('Auth.User.money', $newMoney);
+          //$current_user['money']は$newMoneyと指定する
+          $current_user['money'] = $newMoney;
+          //----------------------------------------------
+          
           return $this->redirect("http://localhost:8888/shopping/buy/");
         }
       }

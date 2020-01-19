@@ -14,6 +14,7 @@
       <option>admin</option>
       <option>Normal User</option>
     </select></p><br>
+  <p class="p">money : <input type="text" name="money" value="<?php echo $admin['Admin']['money']; ?>"></p><br>
     
   
     <?php 
