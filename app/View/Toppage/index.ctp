@@ -54,6 +54,5 @@
     
     <!-- ページングの表示 -->
     <?php echo $this -> Paginator -> numbers(); ?>
-    
    </body>
  </html>

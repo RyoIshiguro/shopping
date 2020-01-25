@@ -11,7 +11,7 @@
       'Products',
       'Details',
       'Cart',
-      'cartitem'
+      'Cartitem'
     );
     
     //DateComponentを指定する
@@ -57,7 +57,7 @@
           //read(null,$this->request->data('detail_id'));のnullの意味は＊全てのフィールドを意味するread(('id','email'),$user_id);とすると指定可能 もしくはarray(''),$user_id
           $this->Cartitem->read(null,$this->request->data('detail_id'));
           //status is changed active to inactive 
-          $this->cartitem->set(
+          $this->Cartitem->set(
             array(
               //active to inactive 1 -> 0
               'status'=>'0',
@@ -65,7 +65,7 @@
             )
           );
           //save what data was updated
-          $this->cartitem->save();
+          $this->Cartitem->save();
           // die();
           
           
@@ -92,6 +92,7 @@
       }
       
       //購入機能 buy feature
+      //----------------------------------------------
       if($this->request->is('post'))
       {
         // echo "buy";
@@ -99,14 +100,18 @@
         {
           $this->Cartitem->read(null,$this->request->data('detail_id'));
           //status is changed active to inactive 
-          $this->cartitem->set(
+          $this->Cartitem->set(
             array(
               //active to inactive 1 -> 0
+              //0 = inactive
+              //1 = in cart
+              //2 = buy
               'status'=>'2',
+              'quantity'=>$this->request->data('count'),
               'paid_datetime'=>$now
             )
           );
-          $this->cartitem->save();
+          $this->Cartitem->save();
           
           $this->Cart->read(null,$this->request->data('cart_id'));
           $this->Cart->set(
@@ -125,7 +130,7 @@
           //金額を計算する
           $this->Cart->set(array(
             //カートの金額＋製品の金額 これをカートに追加する。
-            'price'=> (int) $data_cart['Cart']['price'] - (int) $product_data['Details']['price']
+            'price'=> (int) $data_cart['Cart']['price'] - ((int) $product_data['Details']['price'] * $data_cart['Cartitem']['quantity'])
           ));
           //計算結果を保存
           $this->Cart->save();

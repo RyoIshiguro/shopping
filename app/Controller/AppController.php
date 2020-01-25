@@ -54,8 +54,11 @@ App::uses('Controller', 'Controller');
                  //action index() にリダイレクト
                  'action' => 'index'
              ),
+             //ログアウト時のリダイレクト
              'logoutRedirect' => array(
+                 //コントローラ選択
                  'controller' => 'login',
+                 //action index() にリダイレクト
                  'action' => 'index',
                  'home'
              ),
@@ -134,25 +137,37 @@ App::uses('Controller', 'Controller');
             //ログインしていないならtopに戻す
             // $this->redirect('http://localhost:8888/shopping/');
           }
-          
+        
+        //ログインIDの取得
         if($this->Auth->User('id'))
         {
+          //model productのデータを全て取得
           $prodata = $this->Product->find('all');
+          //デバグ用
+          //echo "<pre>";
           // var_dump($this->Auth->User('id'));
+          
+          //viewで使う変数product_dataにproductのデータを格納
           $this->set('product_data',$prodata);
           
+          //model cartのデータを全て取得
           $cartitemdata = $this->Cartitem->find('all');
           //
           // $this->set('cartitemdata',$cartitemdata);
           
-          //display cart amout
+          //display cart amout      cart model から一致するデータを取得　条件 user_id and status = 0
           $cartprice = $this->Cart->find('first',array(
-            "conditions" => array(
-            'user_id'=>$this->Auth->User('id'),
-            'status'=>'0'
-          )));
+                "conditions" => array(
+                'user_id'=>$this->Auth->User('id'),
+                'status'=>'0'
+              )
+            )
+          );
           
+          //viewで使う変数cartpriceにcart model から一致するデータを格納
           $this->set('cartprice',$cartprice);
+          //デバグ用
+          // echo "<pre>";
           // var_dump($cartprice);
         }
         
@@ -172,6 +187,8 @@ App::uses('Controller', 'Controller');
            'cart',
            'products_register',
            'cartitem',
+           'myaccount',
+           'user_information_edit',
            'buy'
          );
      }
@@ -195,5 +212,7 @@ App::uses('Controller', 'Controller');
       $this->log($sql);
       return $sql;
     }
+    
+  
 
  }

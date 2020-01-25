@@ -28,9 +28,73 @@
              <div class="" style="">Condition:<br><h4><?php echo $product['Details']['comment']; ?></h4></div><br>
              
              <form class="" action="" method="post">
-               <button type="submit" name="cart" style="">Cart</button>
-               <button type="submit" name="buy" style="">Buy now</button>
+               <button type="submit" name="button_cart" style="" value="1">Cart</button>
                <input type="hidden" name="cart" value="<?php echo $product['Details']['price']; ?>">
+               
+               <!-- button Buy  押すとモーダルが出る-->
+               <button type="button" data-toggle="modal" data-target="#exampleModal" name="button_buy" style="" class="p" value="button_buy">Buy now</button>
+               <!-- モーダルの設定 -->
+               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                 <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                     <div class="modal-header">
+                       <!-- modal title -->
+                       <h5 class="modal-title" id="exampleModalLabel"><?php echo $product['Details']['name']; ?></h5>
+                       <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                         <span aria-hidden="true">&times;</span>
+                       </button>
+                     </div>
+                     <!-- modal body -->
+                     <div class="modal-body">
+                       <h2><p style="color:blue;"><?php 
+                            echo $current_user['money'];
+                            echo str_repeat("&nbsp;",4); 
+                            echo "-"; 
+                            echo str_repeat("&nbsp;",4); 
+                            echo $product['Details']['price'];
+                            ?>
+                       </h2></p>  
+                       <h4><p><?php
+                            //$dif = 計算式の答え(会員の残金)  会員の資金 - 製品の値段
+                            $dif = $current_user['money'] - $product['Details']['price'];
+                            echo "<br>\n";
+                            echo "Remaining balance: $dif";
+                            echo str_repeat("&nbsp;",1); 
+                            
+                            //条件文 お金が足らない時はエラー文言を表示
+                            if ($dif < 0) 
+                            {
+                              echo "not enough money, you have to earn money first.";
+                            }
+                          ?>
+                         <h4></p>
+                     </div>
+                     
+                     <!-- modal footer -->
+                     <div class="modal-footer">
+                       <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                       
+                       <!-- 条件文 お金が足らない時はボタンを押させない(disabled) -->
+                       <!----------------------------------------------------------->
+                       <?php if ($dif < 0) {  ?>
+                         <button type="submit" class="btn btn-disabled" name="button_buy" value="button_buy" disabled>Buy</button>
+                       <?php } else  { ?>  
+                        <button type="submit" class="btn btn-primary" name="button_buy" value="button_buy" >Buy</button>
+                       <?php  } ?>
+                       <!----------------------------------------------------------->
+                       
+                     </div><!-- /.modal-footer -->
+                   </div><!-- /.modal-content -->
+                 </div><!-- /.modal-dialog -->
+               </div><!-- /.modal -->
+               
+               <input type="hidden" name="user_money" value="<?php echo $dif ?>">
+               
+               <!-- <button type="submit" name="button_buy" style="" value="1">Buy now</button>
+               <input type="hidden" name="buy" value="<?php 
+               // echo $product['Details']['price']; 
+               ?>"> -->
+               
             </form>
            </div>
          </div>

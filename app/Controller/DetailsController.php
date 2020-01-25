@@ -11,51 +11,53 @@
       'Product',
       'Details',
       'Cart',
-      'cartitem'
+      'Cartitem'
     );
     
-    public function beforeFilter()
-    {
-      parent::beforeFilter();
-      
-      //$this->Auth->User();でログインユーザーの情報を取得
-       $user_data = $this->Auth->User();
-       // var_dump($data);
-       
-       //beforeFilterセットした変数を別のアクションで使う方法
-       $this->user = $user_data;
-       
-       //user login it's working
-       if($this->Auth->User('id'))
-       {
-         //cart_idから一致するデータを取得する
-         //model cart からステータス0とuser_id(ログインユーザー)を取得
-         $data = $this->Cart->find('first',array(
-           "conditions" => array(
-             'status' => '0',
-             'user_id'=>$this->Auth->User('id')
-             )
-           )
-         );
-         //ログインデータから
-         $this->set('current_cart',$data);
-       }
-         else 
-         {
-           //ログインしていないならtopに戻す
-           // $this->redirect('http://localhost:8888/shopping/');
-         }
-       // echo "<pre>\n";
-       // var_dump($data);
-       
-       
-    }
+  public function beforeFilter()
+  {
+    parent::beforeFilter();
     
-    //DateComponentを指定する
-    public $components = array('Date');
+    //$this->Auth->User();でログインユーザーの情報を取得
+     $user_data = $this->Auth->User();
+     // var_dump($data);
+     
+     //beforeFilterセットした変数を別のアクションで使う方法
+     $this->user = $user_data;
+     
+     //user login it's working
+     if($this->Auth->User('id'))
+     {
+       //cart_idから一致するデータを取得する
+       //model cart からステータス0(pending)とuser_id(ログインユーザー)を取得
+       $data = $this->Cart->find('first',array(
+         "conditions" => array(
+           'status' => '0',
+           'user_id'=>$this->Auth->User('id')
+           )
+         )
+       );
+       //ログインデータから
+       $this->set('current_cart',$data);
+     }
+       else 
+       {
+         //ログインしていないならtopに戻す
+         // $this->redirect('http://localhost:8888/shopping/');
+       }
+     // echo "<pre>\n";
+     // var_dump($data);
+     
+     
+  }
+  
+  //DateComponentを指定する
+  public $components = array('Date');
     
     function index()
     {
+      //カートレイアウトを使用する
+      $this->layout = "cart";
       //<-日時取得->
       //コンポーネントDateから値を取得
       $now = $this->Date->today();
@@ -73,8 +75,11 @@
       // var_dump($get);echo "<br>\n";
         
         $product_id = $this->request->query('id');
+        //デバグ用
+        //echo "<pre>";
         // var_dump($product_id);
-          
+        //die();  
+        
           //取得した商品idと一致するデータをmodel detailから取得
           $data_details = $this->Details->find('first',array(
             "conditions" => array(
@@ -89,123 +94,160 @@
           $this -> set('product', $data_details);
       // }
     
-    //  
-    if($this->request->is('post'))
-    {
+      //  
+      if($this->request->is('post'))
+      {
+        // die();
+        
         $product_id = $this->request->query('id');
         
         $data_cart = $this->Cart->find('first',array(
-          "conditions" => array(
-            'status' => '0',
-            'user_id'=>$this->Auth->User('id')
+            "conditions" => array(
+              'status' => '0',
+              'user_id'=>$this->Auth->User('id')
+            )
           )
-        )
-      );
-      var_dump($this->Auth->User('id'));
-      
-      //if data is null (false)
-      if(!$data_details)
-      {
-        //model cart にデータ生成
-        $this->Cart->create();
-        //model cart 生成する値はstatus user_id price
-        //生成時はstatusは0で、user_idはlogin_id、priceは0
-        $this->Cart->set(array(
-          'status'=>'0',
-          'user_id'=>$this->Auth->User('id'),
-          'price'=>'0',
-          'created_datetime'=>$now,
-          'paid_datetime'=>'',
-          'cancelled_datetime'=>''
-        ));
-        //保存。
-        $this->Cart->save();
-      }
-        // var_dump($data);
-        // die();
+        );
+        // echo "<pre>";
+        // echo "user_id";echo "<br>\n";
+        // var_dump($this->Auth->User('id'));
+        // var_dump($this->Auth->User('id'));
         
-          // $this -> set('product', $data);
-          
-      if($this->request->data('cart'))
-      {
-        //cartにデータ保存＝shopping_cart tableにデータ生成
-        $this->Cartitem->create();
-        $this->Cartitem->set(array(
-          'product_id'=>$product_id,
-          'user_id'=>$this->Auth->User('id'),
-          'cart_id'=>$data_cart['Cart']['id'],
-          'quantity'=>'1',
-          'price'=>(int)$price,
-          'added_datetime'=>$now
-        ));
-        $this->Cartitem->save();
-        // var_dump($data_details);
-        // die();
-        
-        
-        //up date price, this is in cart amount.
-        $data_cart = $this->Cart->read(null,$data_cart['Cart']['id']);
-        // var_dump($data_cart);
-        // die();
-        
-        //金額を計算する
-        $this->Cart->set(array(
-          //カートの金額＋製品の金額 これをカートに追加する。
-          'price'=> (int) $data_cart['Cart']['price'] + (int)$data_details['Details']['price']
-        ));
-        //保存。
-        $this->Cart->save();
-        
-        
-        return $this->redirect('http://localhost:8888/shopping/cart/');
-      } 
-        elseif (isset($_POST['buy'])) 
+        //if data is null (false)
+        if(!$data_cart)
         {
-          echo "buy";
-          return $this->redirect('http://localhost:8888/shopping/buy/');
+          //model cart にデータ生成
+          $this->Cart->create();
+          //model cart 生成する値はstatus user_id price
+          //生成時はstatusは0で、user_idはlogin_id、priceは0
+          $this->Cart->set(array(
+            'status'=>'0',
+            'user_id'=>$this->Auth->User('id'),
+            'price'=>'0',
+            'created_datetime'=>$now,
+            'paid_datetime'=>'',
+            'cancelled_datetime'=>''
+          ));
+          //保存。
+          $this->Cart->save();
         } 
-          else 
+          else
           {
-            echo "error";
-            return $this->redirect('http://localhost:8888/shopping/');
+            echo "faild insert cart id";
+            var_dump($data_details);
           }
-    }
-      // //あとで使用するのでからの配列を作る
-      // $array_conditions = array();
-      // //全データをゲットして$dataとしておく
-      // $data = $this->request->query;
-      // // //paginate これがcomponent pagination これがthis-> Admin ->find('all');をしなくてもデータ取得ができる仕組み
-      // $data = $this -> paginate('Product');
-      // 
-      // $this->set('product',$data);
-      // echo "<pre>";
-      // var_dump($data['Product']['id']);
-      // var_dump($product['Product']['id']);
-      // 
-      // // var_dump($data['Product']['id']);
-      // 
-      // // $this->redirect('')
-      // 
-      // // pegination
-      //   //降順でページネーションを作成。
-      //   $this -> paginate = array(
-      //     //URlにパラメータを送信するクエリ型にする「?」+「変数名」+「=」+「変数の値」というのが、クエリパラメータの基本構造
-      //     'paramType' => 'querystring',
-      //     //表示限界を決める10個分のデータを表示
-      //     'limit' => 10,
-      //     //表示順
-      //     'order' => array(
-      //       //降順
-      //       'emp_no desc'
-      //     ),
-      //     'conditions' => array(
-      //       //validation なし
-      //     )
-      //   );
+          // var_dump($data);
+          // die();
+          
+            // $this -> set('product', $data);
+            
+        if($this->request->data('button_cart'))
+        {
+          // var_dump($this->request->data);
+          // die();
+          echo "cart";
+          //cartにデータ保存＝shopping_cart tableにデータ生成
+          $this->Cartitem->create();
+          $this->Cartitem->set(array(
+            'product_id'=>$product_id,
+            'user_id'=>$this->Auth->User('id'),
+            'cart_id'=>$data_cart['Cart']['id'],
+            'quantity'=>'1',
+            'price'=>(int)$price,
+            'added_datetime'=>$now
+          ));
+          $this->Cartitem->save();
+          // var_dump($data_details);
+          // var_dump($this->Cartitem->save());
+          // die();
+          
+          
+          //up date price, this is in cart amount.
+          $data_cart = $this->Cart->read(null,$data_cart['Cart']['id']);
+          // var_dump($data_cart);
+          // die();
+          
+          //金額を計算する
+          $this->Cart->set(array(
+            //カートの金額＋製品の金額 これをカートに追加する。
+            'price'=> (int) $data_cart['Cart']['price'] + (int)$data_details['Details']['price']
+          ));
+          //保存。
+          $this->Cart->save();
+          
+          
+          return $this->redirect('http://localhost:8888/shopping/cart/');
+        } 
         
+      }
+      
+      
+      //buy now in the detail page
+      //----------------------------------------------
+      if($this->request->is('post'))
+      {
+        // die();
+        if($this->request->data['button_buy'])
+        {
+          
+          // 1. make cart -> paid
+          // 2. make cart item from point 1
+          // 3. deduct money from user
+          // echo "<br>\n";
+          // var_dump($price);
+          // die();
+          
+          $this->Cart->create();
+          $this->Cart->set(array(
+            'status'=>'2',
+            'user_id'=>$this->Auth->User('id'),
+            'price'=>$price,
+            'created_datetime'=>$now,
+            'paid_datetime'=>'',
+            'cancelled_datetime'=>''
+          ));
+          $this->Cart->save();
+          
+          
+          $this->Cartitem->create();
+          $this->Cartitem->set(array(
+            'product_id'=>$product_id,
+            'user_id'=>$this->Auth->User('id'),
+            'cart_id'=>$data_cart['Cart']['id'],
+            'quantity'=>'2',
+            'price'=>(int)$price,
+            'added_datetime'=>$now,
+            'paid_datetime'=>$now
+          ));
+          $this->Cartitem->save();
+          
+              
+          //calcuration user_money - product_price
+          //----------------------------------------------
+          //ポストされた会員の残金
+          $newMoney = $this->request->data('user_money');
+          //デバグ用
+          // echo "<pre>";
+          // var_dump($this->request->data('user_money'));
+          // die();
+          $this->Login->id = $this->Auth->User('id');
+          //フィールド指定して保存する　Login model のmoney fieldに$newmoneyを保存する
+          $this->Login->saveField("money",$newMoney);
+          //セッションに書き込み Auth.model.field,にfieldに$newmoneyを保存する(更新)
+          $this->Session->write('Auth.User.money', $newMoney);
+          //$current_user['money']は$newMoneyと指定する
+          $current_user['money'] = $newMoney;
+          //----------------------------------------------
+              
+              // var_dump(6);
+              
+              return $this->redirect("http://localhost:8888/shopping/buy/");
+            }
+      } 
+        //----------------------------------------------  
         
     }
   }
    
   
- ?>
+?>

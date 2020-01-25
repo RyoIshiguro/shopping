@@ -15,7 +15,7 @@
     function index()
     {
       $this->layout = "admin";
-      echo "Hello Admin";
+      // echo "Hello Admin";
     }
     
     function weapon_list() 

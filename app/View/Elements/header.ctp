@@ -23,7 +23,12 @@
          
        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
          <a class="dropdown-item" href="#">Purchase history</a>
-         <a class="dropdown-item" href="#">My Account</a>
+         <?php if(isset($current_user['username'])){ ?>
+          <a class="dropdown-item" href="http://localhost:8888/shopping/myaccount">My Account</a>
+         <?php } else {?>
+          <a class="dropdown-item" href="http://localhost:8888/shopping/login">My Account<span class="sr-only">(current)</span></a>
+         <?php } ?>
+         
          <div class="dropdown-divider"></div>
          
          <a class="dropdown-item" href="http://localhost:8888/shopping/logout">Logout</a>
@@ -41,10 +46,14 @@
       <li class="nav-item active">
         <a class="nav-link" href="http://localhost:8888/shopping/cart">Cart<span class="sr-only">(current)</span></a>
       </li>
+      <!-- if($role == 'admin'){ -->
       <li class="nav-item active">
-        <a class="nav-link" href="http://localhost:8888/shopping/login">Login <span class="sr-only">(current)</span></a>
+        <?php if(isset($current_user['username'])){ ?>
+          
+        <?php } else {?>
+          <a class="nav-link" href="http://localhost:8888/shopping/login">Login <span class="sr-only">(current)</span></a>
+        <?php } ?>
       </li>
-      
       <!-- session display -->
       <li class="nav-item active">
         <a class="nav-link" href="#">
