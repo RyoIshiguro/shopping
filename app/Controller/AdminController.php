@@ -135,6 +135,12 @@
         //$userはデバッグ用
         $user = $this -> Admin -> save();
         // var_dump($user);
+        
+        ////セッションに書き込み Auth.model.field,にfieldに$this->request->data('')を保存する(更新)
+        $this->Session->write('Auth.User.money', $this->request->data('money'));
+        
+        //$current_user['']はpostされたデータに書き換える
+        $current_user['money'] = $this->request->data('money');
 
         //edit押すとリダイレクトさせる
         $this -> redirect('http://localhost:8888/shopping/admin/users/');

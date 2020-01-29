@@ -1,4 +1,17 @@
 <?php 
+  //Remaining task 
+  // done $current_userの値を編集時にアップデートする。moneyしか対応してないので書き込みが必要
+  
+  //user bought products which are in the cart. need condition,check after parches cart is empty or not. 
+  //empty = cart status should be 2 
+  //still product remains in the cart = cart status should be 0
+  
+  //admin screen's pagination
+
+
+
+
+
   //登録ができなかった時のミス
   //DBのcolumn名とinputで指定してたecho $this->Form->input('first_name');の名前が違った。
   //

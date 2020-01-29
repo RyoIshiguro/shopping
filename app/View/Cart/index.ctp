@@ -5,6 +5,9 @@
   .container-fluid{
     /* float: left; */
   }
+  .modal-dialog{
+    z-index: 100;
+  }
 </style>
 
 <?php 
@@ -24,6 +27,7 @@
 
  <!-- shopping/details/index.ctp -->
  <?php
+  $cart_index = 0;
   foreach ($cart_data as $cart_data) {
   ?>
   <div class="container-fluid" style="float:right;">
@@ -37,18 +41,60 @@
          </div>
          <div class="col-md-8">
            <div class="card-body">
-             <div class="p" style="width:100%"><?php echo $cart_data['Details']['name']; ?></div>
+             <div class="p" style="width:100%">
+               <?php 
+                echo $cart_data['Details']['name'];  
+                echo str_repeat("&nbsp;",4);  
+               ?>
+               <!-- checkbox -->
+               <input type="checkbox" name="check" value="1" >
+             </div>
              <hr>
+             
              <div class="p" style=""><?php echo $cart_data['Details']['content']; ?></div>
              <div class="p" style="color:blue;">$<?php echo $cart_data['Details']['price']; ?></div>
              <div class="p" style="">Condition:<br><?php echo $cart_data['Details']['comment']; ?></div>
              <br>
              
              <form class="" action="" method="post">
-               <input type="" name="count" style="width:100px;" class="p" placeholder="count"></input>
+               
+               <!-- <input type="option" name="count" style="width:100px;" class="p" placeholder="count" value="1"></input> -->
+               <!-- <select class="" name="count" type="submit" style="width:50px;">
+                 <option value="1" selected >1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+                 <option value="5">5</option>
+                 <option value="6">6</option>
+                 <option value="7">7</opton>
+                 <option value="8">8</option>
+                 <option value="9">9</option>
+                 <option value="10">10</option>
+               </select> -->
+               
+               <!-- botton dropdown -->
+               <div class="dropdown">
+                <button type="button" name="count" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  quantity
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                  <button class="dropdown-item" type="submit" name="count" value="1" >1</a>
+                  <button class="dropdown-item" type="submit" name="count" value="2" >2</a>
+                  <button class="dropdown-item" type="submit" name="count" value="3" >3</a>
+                  <button class="dropdown-item" type="submit" name="count" value="4" >4</a>
+                  <button class="dropdown-item" type="submit" name="count" value="5" >5</a>
+                  <button class="dropdown-item" type="submit" name="count" value="6" >6</a>
+                  <button class="dropdown-item" type="submit" name="count" value="7" >7</a>
+                  <button class="dropdown-item" type="submit" name="count" value="8" >8</a>
+                  <button class="dropdown-item" type="submit" name="count" value="9" >9</a>
+                  <button class="dropdown-item" type="submit" name="count" value="10" >10</a>
+                </div>
+              
+               
+               
                
                <!-- button Buy  押すとモーダルが出る-->
-               <button type="button" data-toggle="modal" data-target="#exampleModal" name="buy" style="" class="p" value="buy">Buy now</button>
+               <button type="button" name="buy" style="" class="btn_buy_item" value="buy">Buy now</button>
                <!-- モーダルの設定 -->
                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                  <div class="modal-dialog" role="document">
@@ -110,7 +156,7 @@
                <input type="hidden" name="detail_id" value="<?php echo $cart_data['Cartitems']['id'] ?>">
                <input type="hidden" name="cart_id" value="<?php echo $cart_data['Cart']['id'] ?>">
                <input type="hidden" name="product_id" value="<?php echo $cart_data['Details']['id'] ?>">
-               
+               </div>
              </form>
 
            </div>
@@ -120,7 +166,20 @@
    </div>
   </div>
   <?php
+  $cart_index++;
     }
    ?>
+<script type="text/javascript">
+  // - please wait until the page has loaded before doing the code inside this block
+  $(document).ready(function(){
+    $(".btn_buy_item").on("click", function(){
+      
+      // - last step
+      // - manually show modal!!!!
+      // - https://getbootstrap.com/docs/4.0/components/modal/
+      $('#exampleModal').modal("show");
+    });
+  });
+</script>
 
  <!-- </form> -->

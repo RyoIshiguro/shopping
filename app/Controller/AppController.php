@@ -189,6 +189,7 @@ App::uses('Controller', 'Controller');
            'cartitem',
            'myaccount',
            'user_information_edit',
+           'pharcheshistory',
            'buy'
          );
      }

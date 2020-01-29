@@ -37,8 +37,28 @@
            )
          )
        );
+       
+       $total_cost = 0;
+       if (isset($data["Cart"]["id"])) {
+         $total_cost_cart = $this->Cartitem->find('all', array(
+           // - main condition
+           'conditions' => array(
+             'Cartitem.cart_id' => $data["Cart"]["id"],
+             'Cartitem.status' => 1
+           ),
+           'fields' => array(
+             "SUM(Cartitem.price * Cartitem.quantity) as total_cart_price"
+           )
+         ));
+         
+         if (isset($total_cost_cart[0][0]["total_cart_price"])) {
+           $total_cost = $total_cost_cart[0][0]["total_cart_price"];
+         }
+       }
+       
        //ログインデータから
        $this->set('current_cart',$data);
+       $this->set('total_cost',$total_cost);
      }
        else 
        {
@@ -129,7 +149,7 @@
             'cancelled_datetime'=>''
           ));
           //保存。
-          $this->Cart->save();
+          $data_cart = $this->Cart->save();
         } 
           else
           {
@@ -152,7 +172,7 @@
             'product_id'=>$product_id,
             'user_id'=>$this->Auth->User('id'),
             'cart_id'=>$data_cart['Cart']['id'],
-            'quantity'=>'1',
+            'quantity'=>'1',//1=in the cart still pending
             'price'=>(int)$price,
             'added_datetime'=>$now
           ));
@@ -199,11 +219,14 @@
           
           $this->Cart->create();
           $this->Cart->set(array(
+            //0=pending
+            //1=cancel
+            //2=pharches
             'status'=>'2',
             'user_id'=>$this->Auth->User('id'),
             'price'=>$price,
             'created_datetime'=>$now,
-            'paid_datetime'=>'',
+            'paid_datetime'=>$now,
             'cancelled_datetime'=>''
           ));
           $this->Cart->save();
@@ -214,7 +237,7 @@
             'product_id'=>$product_id,
             'user_id'=>$this->Auth->User('id'),
             'cart_id'=>$data_cart['Cart']['id'],
-            'quantity'=>'2',
+            'quantity'=>'1',
             'price'=>(int)$price,
             'added_datetime'=>$now,
             'paid_datetime'=>$now

@@ -42,6 +42,11 @@
       $this->set('now',$now);
       
       
+      if($this->request->is('post'))
+      {
+        
+      }
+      
       //ポストされたら起動
       if($this->request->is('post'))
       {
@@ -61,13 +66,23 @@
             array(
               //active to inactive 1 -> 0
               'status'=>'0',
-              'cancelled_datetime'=>$now,
+              'cancelled_datetime'=>$now
             )
           );
           //save what data was updated
           $this->Cartitem->save();
           // die();
           
+          $this->Cart->read(null,$this->request->data('cart_id'));
+          $this->Cart->set(
+            array(
+              'status'=>'1',
+              'cancelled_datetime'=>$now
+            )
+          );
+          //save what data was updated
+          $this->Cart->save();
+          // die();
           
           //cartの金額からデリートした分だけの金額を引く
             //up date price, this is in cart amount.
@@ -95,9 +110,19 @@
       //----------------------------------------------
       if($this->request->is('post'))
       {
-        // echo "buy";
+        echo $this->request->data('cart_id');
+        
         if($this->request->data('buy'))
         {
+          $weapon_name = $this->Product->find('first', array(
+            'conditions' => array(
+          		'user_id' => $this->Auth->User('id'),
+            )
+          ));
+        
+          $this->set('weapon_name',$weapon_name);
+        
+          
           $this->Cartitem->read(null,$this->request->data('detail_id'));
           //status is changed active to inactive 
           $this->Cartitem->set(
@@ -117,7 +142,8 @@
           $this->Cart->set(
             array(
               //active to inactive 1 -> 0
-              'Cart.status'=>1
+              'status'=>'2',
+              'paid_datetime'=>$now
             )
           );
           //save what data was updated
@@ -153,8 +179,6 @@
         }
       }
       
-      
-      
       $my_cart_items = $this->Cart->find('all', array(
       	// - main condition
       	'conditions' => array(
@@ -188,14 +212,44 @@
       		'Details.*'
       	),
       ));
-      
+      // 
       // echo "<pre>";
       // var_dump($my_cart_items);
       // die();
       
+      
+      $total_cost = 0;
+      if (isset($my_cart_items[0]["Cart"]["id"])) {
+        $total_cost_cart = $this->Cartitem->find('all', array(
+          // - main condition
+          'conditions' => array(
+            'Cartitem.cart_id' => $my_cart_items[0]["Cart"]["id"],
+            'Cartitem.status' => 1
+          ),
+          'fields' => array(
+            "SUM(Cartitem.price * Cartitem.quantity) as total_cart_price"
+          )
+        ));
+        
+        if (isset($total_cost_cart[0][0]["total_cart_price"])) {
+          $total_cost = $total_cost_cart[0][0]["total_cart_price"];
+        }
+      }
+      
+      if($this->request->data['checkbox'])
+      {
+        echo "hello";
+      }
+      
       //three tables of data in the $cart_data
       $this->set('cart_data',$my_cart_items);
-      
+      // echo "<pre>";
+      // var_dump($my_cart_items);
+      // die();
+      $this->set('total_cost',$total_cost);
+      // echo "<pre>";
+      // var_dump($total_cost);
+      // die();
       
     }
     

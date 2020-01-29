@@ -48,7 +48,7 @@ admin layout
           <a href="#" class="list-group-item list-group-item-action">Cart</a>
           <a href="#" class="list-group-item list-group-item-action">History</a>
           <a href="#" class="list-group-item list-group-item-action">Sales</a>
-          <a href="#" class="list-group-item list-group-item-action">contsct</a>
+          <a href="#" class="list-group-item list-group-item-action">contact</a>
         </div>
         
         <div class="col offset-3" id="main" style="margin-left:0;">

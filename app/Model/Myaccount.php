@@ -20,10 +20,10 @@
           'message' => 'username is required',
         )
       ),
-      'password' => array(
+      'email' => array(
         'required' => array(
           'rule' => 'notBlank',
-          'message' => 'password is requrid'
+          'message' => 'email is requrid'
         )  
       )
     );

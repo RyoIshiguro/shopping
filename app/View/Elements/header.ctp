@@ -22,7 +22,7 @@
        
          
        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-         <a class="dropdown-item" href="#">Purchase history</a>
+         <a class="dropdown-item" href="http://localhost:8888/shopping/pharcheshistory">Purchase history</a>
          <?php if(isset($current_user['username'])){ ?>
           <a class="dropdown-item" href="http://localhost:8888/shopping/myaccount">My Account</a>
          <?php } else {?>
