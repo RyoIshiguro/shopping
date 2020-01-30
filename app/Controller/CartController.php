@@ -53,9 +53,11 @@
         //deleteが押されたか確認
         // var_dump($this->request->data('delete'));
         
-        //delete was pushed 押されたのdがdeleteなら
+        //delete was pushed 押されたのがdeleteなら
         if($this->request->data('delete'))
         {
+          //  var_dump($this->request->data);
+          // die();
           //update of trigger, update the new data to Cartitem
           //detail_id ＝ $cart_data['Cartitems']['id'];(joinしたデータ)
           //postでdetail_idを受け取ったらcartitemに値をセットする
@@ -73,15 +75,16 @@
           $this->Cartitem->save();
           // die();
           
-          $this->Cart->read(null,$this->request->data('cart_id'));
-          $this->Cart->set(
-            array(
-              'status'=>'1',
-              'cancelled_datetime'=>$now
-            )
-          );
-          //save what data was updated
-          $this->Cart->save();
+          // $this->Cart->read(null,$this->request->data('cart_id'));
+          // $this->Cart->set(
+          //   array(
+          // 
+          //     'status'=>'1',
+          //     'cancelled_datetime'=>$now
+          //   )
+          // );
+          // //save what data was updated
+          // $this->Cart->save();
           // die();
           
           //cartの金額からデリートした分だけの金額を引く
@@ -114,13 +117,13 @@
         
         if($this->request->data('buy'))
         {
-          $weapon_name = $this->Product->find('first', array(
-            'conditions' => array(
-          		'user_id' => $this->Auth->User('id'),
-            )
-          ));
-        
-          $this->set('weapon_name',$weapon_name);
+          // $weapon_name = $this->Product->find('first', array(
+          //   'conditions' => array(
+          // 		'user_id' => $this->Auth->User('id'),
+          //   )
+          // ));
+          // 
+          // $this->set('weapon_name',$weapon_name);
         
           
           $this->Cartitem->read(null,$this->request->data('detail_id'));
