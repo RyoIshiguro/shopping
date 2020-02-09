@@ -207,12 +207,13 @@ App::uses('Controller', 'Controller');
        return false;
      }
      
-     public function sql(){
+     public function sql()
+     {
       $sql = $this->getDataSource()->getLog();
 
       $this->log($sql);
       return $sql;
-    }
+     }
     
   
 

@@ -77,7 +77,7 @@
     function index()
     {
       //カートレイアウトを使用する
-      $this->layout = "cart";
+      // $this->layout = "cart";
       //<-日時取得->
       //コンポーネントDateから値を取得
       $now = $this->Date->today();
@@ -172,7 +172,7 @@
             'product_id'=>$product_id,
             'user_id'=>$this->Auth->User('id'),
             'cart_id'=>$data_cart['Cart']['id'],
-            'quantity'=>'1',//1=in the cart still pending
+            'quantity'=>$this->request->data('count'),//1=in the cart still pending
             'price'=>(int)$price,
             'added_datetime'=>$now
           ));
@@ -224,42 +224,49 @@
             //2=pharches
             'status'=>'2',
             'user_id'=>$this->Auth->User('id'),
-            'price'=>$price,
+            'price'=>$price * $this->request->data('count'),
             'created_datetime'=>$now,
             'paid_datetime'=>$now,
             'cancelled_datetime'=>''
           ));
-          $this->Cart->save();
-          
+          $new_data_cart = $this->Cart->save();
           
           $this->Cartitem->create();
           $this->Cartitem->set(array(
             'product_id'=>$product_id,
             'user_id'=>$this->Auth->User('id'),
-            'cart_id'=>$data_cart['Cart']['id'],
-            'quantity'=>'1',
-            'price'=>(int)$price,
+            'cart_id'=>$new_data_cart['Cart']['id'],
+            'quantity'=>$this->request->data('count'),
+            'price'=>(int)$total_price = $price * $this->request->data('count'),
             'added_datetime'=>$now,
             'paid_datetime'=>$now
           ));
-          $this->Cartitem->save();
+          $new_Cartitem_data = $this->Cartitem->save();
           
               
           //calcuration user_money - product_price
           //----------------------------------------------
           //ポストされた会員の残金
-          $newMoney = $this->request->data('user_money');
+          $current_user_money = $this->request->data('user_money');
+          // echo "<pre>";
+          // var_dump($newMoney);
+          
+          //ここで会員の残金を計算  持ち金 - カートの金額
+          $new_current_user_money = $current_user_money - $total_price;
           //デバグ用
           // echo "<pre>";
-          // var_dump($this->request->data('user_money'));
+          // var_dump($newMoney2);
+          // var_dump($newMoney);
+          // var_dump($total_price);
           // die();
+          
           $this->Login->id = $this->Auth->User('id');
           //フィールド指定して保存する　Login model のmoney fieldに$newmoneyを保存する
-          $this->Login->saveField("money",$newMoney);
+          $this->Login->saveField("money",$new_current_user_money);
           //セッションに書き込み Auth.model.field,にfieldに$newmoneyを保存する(更新)
-          $this->Session->write('Auth.User.money', $newMoney);
+          $this->Session->write('Auth.User.money', $new_current_user_money);
           //$current_user['money']は$newMoneyと指定する
-          $current_user['money'] = $newMoney;
+          $current_user['money'] = $new_current_user_money;
           //----------------------------------------------
               
               // var_dump(6);

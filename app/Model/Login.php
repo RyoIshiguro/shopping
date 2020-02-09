@@ -12,6 +12,7 @@
   class Login extends AppModel
   {
     public $useTable = 'users';
+    public $name = "Login";
     
     public $validate = array(
       'username' => array(

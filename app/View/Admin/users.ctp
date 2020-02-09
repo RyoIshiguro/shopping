@@ -40,10 +40,15 @@
   
   <?php } ?>
   
-  <!-- ページングの表示 -->
-  <?php echo $this -> Paginator -> numbers(); ?>
+  
+
 
 </table>
+
+<!-- ページングの表示 -->
+<div class="" style="">
+  <?php echo $this -> Paginator -> numbers(); ?>
+</div>
   
 <?php 
   // echo "<pre>";

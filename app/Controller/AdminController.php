@@ -33,45 +33,31 @@
       //全データをゲットして$dataとしておく
       $data = $this->request->query;
       
+      // pegination
+      //----------------------------------------
+      //降順でページネーションを作成。
+      $this -> paginate = array(
+        //URlにパラメータを送信するクエリ型にする「?」+「変数名」+「=」+「変数の値」というのが、クエリパラメータの基本構造
+        'paramType' => 'querystring',
+        //表示限界を決める10個分のデータを表示
+        'limit' => 5,
+        //表示順
+        'order' => array(
+          //降順
+          'id desc'
+        ),
+        'conditions' => array(
+          
+        )
+      );
+      
       // //paginate これがcomponent pagination これがthis-> Admin ->find('all');をしなくてもデータ取得ができる仕組み
       $data = $this -> paginate('Admin');
 
       //viewで使う変数の作成 $admin = $data
       $this->set('admin',$data);
-      
-      // pegination
-        //降順でページネーションを作成。
-        $this -> paginate = array(
-          //URlにパラメータを送信するクエリ型にする「?」+「変数名」+「=」+「変数の値」というのが、クエリパラメータの基本構造
-          'paramType' => 'querystring',
-          //表示限界を決める10個分のデータを表示
-          'limit' => 10,
-          //表示順
-          'order' => array(
-            //降順
-            'emp_no desc'
-          ),
-          'conditions' => array(
-            //バリデーション↓
-            //'first_name like' => '%'.$test.'%',
-            // 'gender' => 'M',
-            // 'first_name like' => "%Pa%"
-            // 'hire_date >=' => '2019-01-01'
-            // array(
-            //   'or' => array(
-            //     array('first_name like' => '%a%'),
-            //     array('first_name like' => '%b%')
-            //   )
-            // ),
-            // array(
-            //   'or' => array(
-            //     array('last_name like' => '%r%'),
-            //     array('last_name like' => '%z%'),
-            //   )
-            // ),
-            // 'gender' => 'M'
-          )
-        );
+      //pagination
+      //----------------------------------------
       
     }
     
@@ -204,28 +190,31 @@
       //全データをゲットして$dataとしておく
       $data = $this->request->query;
       
+      // pegination
+      //----------------------------------------
+      //降順でページネーションを作成。
+      $this -> paginate = array(
+        //URlにパラメータを送信するクエリ型にする「?」+「変数名」+「=」+「変数の値」というのが、クエリパラメータの基本構造
+        'paramType' => 'querystring',
+        //表示限界を決める10個分のデータを表示
+        'limit' => 5,
+        //表示順
+        'order' => array(
+          //降順
+          'id desc'
+        ),
+        'conditions' => array(
+          
+        )
+      );
+      
       // //paginate これがcomponent pagination これがthis-> Admin ->find('all');をしなくてもデータ取得ができる仕組み
       $data = $this -> paginate('Product');
 
       //viewで使う変数の作成 $admin = $data
       $this->set('product',$data);
-      
-      // pegination
-        //降順でページネーションを作成。
-        $this -> paginate = array(
-          //URlにパラメータを送信するクエリ型にする「?」+「変数名」+「=」+「変数の値」というのが、クエリパラメータの基本構造
-          'paramType' => 'querystring',
-          //表示限界を決める10個分のデータを表示
-          'limit' => 10,
-          //表示順
-          'order' => array(
-            //降順
-            'emp_no desc'
-          ),
-          'conditions' => array(
-            //validation なし
-          )
-        );
+      //pagination
+      //----------------------------------------
       
     }
     

@@ -41,51 +41,8 @@
   
 </style>
   
-  <body>
-    <!-- モーダルの設定 -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <!-- modal title -->
-            <h5 class="modal-title product_title" id="exampleModalLabel">title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          
-          <!-- modal body -->
-          <div class="modal-body">
-            <!-- user's money -->
-            <div class="money_user">
-            </div>
-            <hr>
-            <!-- product's price -->
-            <div class="money_product_price">
-            </div>
-            <!-- remaining balance -->
-            <div class="money_remaining">
-            </div>
-          </div>
-          
-          <!-- modal footer -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-            
-            <!-- 条件文 お金が足らない時はボタンを押させない(disabled) -->
-            <!----------------------------------------------------------->
-            <?php if($current_user['money'] > $total_cost){  ?>
-              <button type="submit" class="btn btn-primary" name="buy" value="buy" >Buy</button>
-            <?php } else { ?>
-              <button type="submit" class="btn btn-disabled" name="buy" value="buy" disabled>Buy</button>
-            <?php } ?>
-            <!----------------------------------------------------------->
-            
-          </div><!-- /.modal-footer -->
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    
+    <!-- モーダル カートの中を出力-->
+    <!----------------------------------------------------------->
     <div class="modal fade" id="modal_cart_buy_items" tabindex="-1" role="dialog" aria-labelledby="modal_cart_buy_items">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -103,12 +60,31 @@
           
           <!-- modal footer -->
           <div class="modal-footer">
+            <div class="card-body cartamount" style="height:38px; margin:0;  line-height:0%; ">
+            </div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+            
+            <!-- 条件文 お金が足らない時はボタンを押させない(disabled) -->
+            <!----------------------------------------------------------->
+            <form class="" action="" method="post">
+            <?php if($current_user['money'] > $total_cost){  ?>
+              <button type="submit" class="btn btn-primary" name="buy" value="buy" >Buy</button>
+            <?php } else { ?>
+              <button type="submit" class="btn btn-disabled" name="buy" value="buy" disabled>Buy</button>
+            <?php } ?>
+            <div class="" id="container_items">
+              <!-- ここにappendで追加された値が入る -->
+            </div>
+            
+            </form>
+            <!----------------------------------------------------------->
             
           </div><!-- /.modal-footer -->
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!----------------------------------------------------------->
+    <!-- モーダル カートの中を出力-->
     
     
     <!-- レイアウト -->
@@ -129,11 +105,15 @@
             <!-- <a href="http://localhost:8888/shopping/buy/" class="list-group-item list-group-item-action">Buy</a> -->
             
             <!-- button Buy  押すとモーダルが出る-->
-            <button type="button" ame="buy" style="" class="list-group-item list-group-item-action" id="btn_cart_buy" value="buy">Buy now</button>
+            <button type="button" name="buy" style="" class="list-group-item list-group-item-action" id="btn_cart_buy" value="buy">Buy now</button>
              <!-- <input type="hidden" name="user_money" value="<?php echo $dif ?>"> -->
              <!-- <input type="hidden" name="detail_id" value="<?php echo $cart_data['Cartitems']['id'] ?>"> -->
             
-            <a class="list-group-item list-group-item-action">
+            <a class="
+              list-group-item 
+              list-group-item-action
+              total_amount_of_cart
+            ">
               <?php 
                 if(isset($total_cost)) 
                 {

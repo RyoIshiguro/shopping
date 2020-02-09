@@ -54,24 +54,42 @@
           <a class="nav-link" href="http://localhost:8888/shopping/login">Login <span class="sr-only">(current)</span></a>
         <?php } ?>
       </li>
-      <!-- session display -->
-      <li class="nav-item active">
+      
+      <!-- session display current user_name-->
+      <li class="nav-item active" id="current_user_id">
         <a class="nav-link" href="#">
-          <?php 
-          // var_dump($current_user);
-           if(isset($current_user['username']))
-           {
-             echo 'Welcom :'. ' '.$current_user['username'];
-             echo str_repeat("&nbsp;",4); //phpの空白入れ方。数字が半角スペースの数
-             echo '$ :'. ' '.$current_user['money'];
-           }
-          ?>
+          <p style="margin:0;">
+            <?php 
+              // var_dump($current_user);
+               if(isset($current_user['username']))
+               {
+                 echo 'Welcom :'. ' '.$current_user['username'];
+               }
+            ?>
+          </p>
+        </a>
+      </li>
+      <!-- session display current user_name-->
+      
+      <!-- session display current user_money-->  
+      <li class="nav-item active">
+        <a class="nav-link" href="#">  
+          <p style="margin:0;" >
+            <?php 
+              // var_dump($current_user);
+               if(isset($current_user['username']))
+               {
+                 echo '$ :'. ' '.$current_user['money'];
+               }
+            ?>
+          </p>
           <span class="sr-only">(current)</span>
         </a>
       </li>
+      <!-- session display current user_money-->  
       
     </ul>
-    <form class="form-inline my-2 my-lg-0" method="get">
+    <form class="form-inline my-2 my-lg-0" action="http://localhost:8888/shopping/" method="get">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
