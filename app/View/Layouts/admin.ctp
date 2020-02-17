@@ -45,8 +45,7 @@ admin layout
           <a href="http://localhost:8888/shopping/admin/users/" class="list-group-item list-group-item-action">Users</a>
           <!-- <a href="http://localhost:8888/shopping/admin/register/" class="list-group-item list-group-item-action">Register</a> -->
           <a href="http://localhost:8888/shopping/admin/products/" class="list-group-item list-group-item-action">Products</a>
-          <a href="#" class="list-group-item list-group-item-action">Cart</a>
-          <a href="#" class="list-group-item list-group-item-action">History</a>
+          <a href="http://localhost:8888/shopping/admin/cart_history/" class="list-group-item list-group-item-action">Cart_history</a>
           <a href="#" class="list-group-item list-group-item-action">Sales</a>
           <a href="#" class="list-group-item list-group-item-action">contact</a>
         </div>

@@ -338,5 +338,169 @@
         $this -> Flash -> error(__('Unable to add your post.'));
       }
     }
+    
+    function cart_history()
+    {
+      //使用するlayoutを指定
+      $this->layout = "admin";
+      
+      $data = $this->request->query;  
+      
+      // pegination
+      //----------------------------------------
+      //降順でページネーションを作成。
+      $this -> paginate = array(
+        //URlにパラメータを送信するクエリ型にする「?」+「変数名」+「=」+「変数の値」というのが、クエリパラメータの基本構造
+        'paramType' => 'querystring',
+        //表示限界を決める10個分のデータを表示
+        'limit' => 25,
+        //表示順
+        'order' => array(
+          //降順
+          'id desc'
+        ),
+        'conditions' => array(
+          
+        )
+      );
+      
+      // //paginate これがcomponent pagination これがthis-> Admin ->find('all');をしなくてもデータ取得ができる仕組み
+      $data = $this -> paginate('Cart');
+
+      //viewで使う変数の作成 $admin = $data
+      $this->set('Carts_history',$data);
+      //pagination
+      //---------------------------------------- 
+      
+      //user_id search 
+      //--------------------------------------------
+      if($this->request->query('user_id'))
+      {
+        //getの中身 あいまい検索ではpostは使わない get した内容を受け取るのが$test
+        $test =  $this->request->query('user_id');
+        
+        $array_conditions = array();
+        //デバグ
+        // echo "<pre>";
+        // var_dump($test);
+        // die();
+        
+        $this->paginate = array(
+                'paramType'=>'querystring',
+                'limit'=>25,
+                'order' => array(
+                'id desc'
+              ),
+              'conditions' => array(
+                array(
+                  'or' => array(
+                array('Cart.user_id like' => '%'.$test.'%')
+              )
+            )
+          )
+        );
+        
+        // //paginate これがcomponent pagination これがthis-> Employee ->find('all');をしなくてもデータ取得ができる仕組み
+        $data = $this->paginate('Cart');
+        
+        //デバグ
+        // echo "<pre>";
+        // var_dump($data);
+        // die();
+        
+        //viewで使う変数の作成 $employees = $data
+        $this->set('Carts_history',$data);
+      }  
+      //--------------------------------------------
+      //user_id search 
+      
+      //status search 
+      //--------------------------------------------
+      if($this->request->query('status'))
+      {
+        //getの中身 あいまい検索ではpostは使わない get した内容を受け取るのが$test
+        $test =  $this->request->query('status');
+        
+        $array_conditions = array();
+        //デバグ
+        // echo "<pre>";
+        // var_dump($test);
+        // die();
+        
+        $this->paginate = array(
+                'paramType'=>'querystring',
+                'limit'=>25,
+                'order' => array(
+                'id desc'
+              ),
+              'conditions' => array(
+                array(
+                  'or' => array(
+                array('Cart.status like' => '%'.$test.'%')
+              )
+            )
+          )
+        );
+        
+        // //paginate これがcomponent pagination これがthis-> Employee ->find('all');をしなくてもデータ取得ができる仕組み
+        $data = $this->paginate('Cart');
+        
+        //デバグ
+        // echo "<pre>";
+        // var_dump($data);
+        // die();
+        
+        //viewで使う変数の作成 $employees = $data
+        $this->set('Carts_history',$data);
+      }  
+      //--------------------------------------------
+      //status search 
+      
+      //price search 
+      //--------------------------------------------
+      if($this->request->query('price'))
+      {
+        //getの中身 あいまい検索ではpostは使わない get した内容を受け取るのが$test
+        $test =  $this->request->query('price');
+        
+        $array_conditions = array();
+        //デバグ
+        // echo "<pre>";
+        // var_dump($test);
+        // die();
+        
+        $this->paginate = array(
+                'paramType'=>'querystring',
+                'limit'=>25,
+                'order' => array(
+                'id desc'
+              ),
+              'conditions' => array(
+                array(
+                  'or' => array(
+                array('Cart.price like' => '%'.$test.'%')
+              )
+            )
+          )
+        );
+        
+        // //paginate これがcomponent pagination これがthis-> Employee ->find('all');をしなくてもデータ取得ができる仕組み
+        $data = $this->paginate('Cart');
+        
+        //デバグ
+        // echo "<pre>";
+        // var_dump($data);
+        // die();
+        
+        //viewで使う変数の作成 $employees = $data
+        $this->set('Carts_history',$data);
+      }  
+      //--------------------------------------------
+      //price search 
+      
+      
+      
+    }
+    
   }
  ?>

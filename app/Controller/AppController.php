@@ -185,6 +185,7 @@ App::uses('Controller', 'Controller');
            'delete',
            'products',
            'cart',
+           'cart_history',
            'products_register',
            'cartitem',
            'myaccount',
