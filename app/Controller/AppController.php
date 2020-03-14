@@ -191,6 +191,7 @@ App::uses('Controller', 'Controller');
            'myaccount',
            'user_information_edit',
            'pharcheshistory',
+           'sales',
            'buy'
          );
      }
